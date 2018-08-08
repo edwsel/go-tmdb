@@ -30,12 +30,12 @@ type Person struct {
 }
 
 type PersonTranslations struct {
-	ID int
+	ID           int
 	Translations []struct {
 		Iso639_1    string `json:"iso_639_1"`
 		Name        string `json:"name"`
 		EnglishName string `json:"english_name"`
-		Data struct {
+		Data        struct {
 			Title    string `json:"title,omitempty"`
 			Overview string `json:"overview,omitempty"`
 			Homepage string `json:"homepage,omitempty"`
@@ -56,7 +56,7 @@ type PersonShort struct {
 // PersonChanges struct
 type PersonChanges struct {
 	Changes []struct {
-		Key string
+		Key   string
 		Items []struct {
 			ID     string
 			Action string
@@ -67,7 +67,7 @@ type PersonChanges struct {
 
 // PersonCombinedCredits struct
 type PersonCombinedCredits struct {
-	ID int
+	ID   int
 	Cast []struct {
 		Adult         bool
 		Character     string
@@ -95,7 +95,7 @@ type PersonCombinedCredits struct {
 
 // PersonImages struct
 type PersonImages struct {
-	ID int
+	ID       int
 	Profiles []struct {
 		AspectRatio float32 `json:"aspect_ratio"`
 		FilePath    string  `json:"file_path"`
@@ -124,7 +124,7 @@ type PersonLatest struct {
 
 // PersonMovieCredits struct
 type PersonMovieCredits struct {
-	ID int
+	ID   int
 	Cast []struct {
 		Adult         bool
 		Character     string
@@ -162,7 +162,7 @@ type PersonTaggedImages struct {
 	Page         int
 	TotalPages   int `json:"total_pages"`
 	TotalResults int `json:"total_results"`
-	Results []struct {
+	Results      []struct {
 		AspectRatio float32 `json:"aspect_ratio"`
 		FilePath    string  `json:"file_path"`
 		ID          string
@@ -173,7 +173,7 @@ type PersonTaggedImages struct {
 		VoteCount   int     `json:"vote_count"`
 		ImageType   string  `json:"image_type"`
 		MediaType   string  `json:"media_type"`
-		Media struct {
+		Media       struct {
 			Adult         bool
 			BackdropPath  string `json:"backdrop_path"`
 			ID            int
@@ -188,7 +188,7 @@ type PersonTaggedImages struct {
 
 // PersonTvCredits struct
 type PersonTvCredits struct {
-	ID int
+	ID   int
 	Cast []struct {
 		Character    string
 		CreditID     string `json:"credit_id"`
@@ -215,6 +215,7 @@ type PersonTvCredits struct {
 // http://docs.themoviedb.apiary.io/#reference/people/personid/get
 func (tmdb *TMDb) GetPersonInfo(id int, options map[string]string) (*Person, error) {
 	var availableOptions = map[string]struct{}{
+		"language":           {},
 		"append_to_response": {}}
 	var personInfo Person
 	optionsString := getOptionsString(options, availableOptions)

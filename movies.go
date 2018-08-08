@@ -318,8 +318,8 @@ type MovieTranslations struct {
 		Iso639_1    string `json:"iso_639_1"`
 		Name        string `json:"name"`
 		EnglishName string `json:"english_name"`
-		Data struct{
-			Title string `json:"title,omitempty"`
+		Data        struct {
+			Title    string `json:"title,omitempty"`
 			Overview string `json:"overview,omitempty"`
 			Homepage string `json:"homepage,omitempty"`
 		} `json:"data"`

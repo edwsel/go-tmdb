@@ -37,7 +37,14 @@ func (s *TmdbSuite) SetUpSuite(c *C) {
 	accountID, _ := config.Get("accountID")
 	s.accountID, _ = strconv.Atoi(accountID)
 	testKey, _ := config.Get("testKey")
-	s.tmdb = Init(testKey)
+
+	tmdbConfig := Config{
+		ApiKey:   testKey,
+		UseProxy: false,
+		Proxies:  nil,
+	}
+
+	s.tmdb = Init(tmdbConfig)
 }
 
 func (s *TmdbSuite) baseTest(input interface{}, err error, c *C) {
