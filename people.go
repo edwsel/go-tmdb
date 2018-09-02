@@ -36,9 +36,7 @@ type PersonTranslations struct {
 		Name        string `json:"name"`
 		EnglishName string `json:"english_name"`
 		Data        struct {
-			Title    string `json:"title,omitempty"`
-			Overview string `json:"overview,omitempty"`
-			Homepage string `json:"homepage,omitempty"`
+			Biography string `json:"biography,omitempty"`
 		} `json:"data"`
 	}
 }
