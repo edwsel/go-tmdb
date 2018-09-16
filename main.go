@@ -31,6 +31,7 @@ type Proxy struct {
 	Login    string
 	Password string
 	Auth     bool
+	Secure   bool
 	throttle <-chan time.Time
 }
 
@@ -58,7 +59,7 @@ func Init(config Config) *TMDb {
 	if config.UseProxy == true && len(config.Proxies) > 1 {
 		internalConfig.useProxy = config.UseProxy
 		internalConfig.proxies = prepareProxies(config.Proxies)
-		internalConfig.roundRobin = InitRoundRobin(len(internalConfig.proxies)-1)
+		internalConfig.roundRobin = InitRoundRobin(len(internalConfig.proxies) - 1)
 	}
 
 	return &TMDb{apiKey: config.ApiKey}
@@ -150,21 +151,28 @@ func getHttpClientWithProxy(proxy Proxy) http.Client {
 	return http.Client{
 		Transport: &http.Transport{
 			Proxy: http.ProxyURL(makeProxyUrl(proxy)),
-
 		},
 	}
 }
 
 func makeProxyUrl(proxy Proxy) (*url.URL) {
 	proxyUrl := ""
+	schema := "http"
+
+	if proxy.Secure {
+		schema = "https"
+	}
+
 	if proxy.Auth {
-		proxyUrl = fmt.Sprintf("https://%s:%s@%s:%s",
+		proxyUrl = fmt.Sprintf("%s://%s:%s@%s:%s",
+			schema,
 			proxy.Login,
 			proxy.Password,
 			proxy.Host,
 			proxy.Port)
 	} else {
-		proxyUrl = fmt.Sprintf("https://%s:%s",
+		proxyUrl = fmt.Sprintf("%s://%s:%s",
+			schema,
 			proxy.Host,
 			proxy.Port)
 	}
