@@ -39,7 +39,7 @@ type TMDb struct {
 	apiKey string
 }
 
-var internalConfig tmdbConfig
+var internalConfig *tmdbConfig
 
 type tmdbConfig struct {
 	useProxy   bool
@@ -54,7 +54,7 @@ type apiStatus struct {
 
 // Init setup the apiKey
 func Init(config Config) *TMDb {
-	internalConfig := new(tmdbConfig)
+	internalConfig = new(tmdbConfig)
 	if config.UseProxy == true && len(config.Proxies) > 1 {
 		internalConfig.useProxy = config.UseProxy
 		internalConfig.proxies = prepareProxies(config.Proxies)
