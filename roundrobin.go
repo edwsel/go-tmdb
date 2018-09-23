@@ -5,33 +5,16 @@ import (
 )
 
 type roundRobinProxy struct {
-	proxies       []Proxy
 	currentTicker int
 	maxAllowed    int
 	mu            sync.Mutex
 }
 
-func InitRoundRobin(proxies []Proxy) (roundRobinProxy) {
+func InitRoundRobin(maxAllowed int) (roundRobinProxy) {
 	return roundRobinProxy{
-		proxies:       proxies,
-		maxAllowed:    len(proxies)-1,
+		maxAllowed:    maxAllowed,
 		currentTicker: 0,
 		mu:            sync.Mutex{},
-	}
-}
-
-func (r *roundRobinProxy) GetProxy() Proxy {
-	for {
-		tickerNumber := r.GetTicker()
-
-		proxy := r.proxies[tickerNumber]
-
-		select {
-		case <-proxy.throttle:
-			return proxy
-		default:
-			break
-		}
 	}
 }
 
