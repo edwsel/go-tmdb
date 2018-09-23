@@ -45,7 +45,7 @@ var internalConfig tmdbConfig
 type tmdbConfig struct {
 	useProxy   bool
 	proxies    []Proxy
-	roundRobin roundRobin
+	roundRobin roundRobinProxy
 }
 
 type apiStatus struct {
