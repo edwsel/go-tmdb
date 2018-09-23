@@ -14,7 +14,7 @@ type roundRobinProxy struct {
 func InitRoundRobin(proxies []Proxy) (roundRobinProxy) {
 	return roundRobinProxy{
 		proxies:       proxies,
-		maxAllowed:    len(proxies),
+		maxAllowed:    len(proxies)-1,
 		currentTicker: 0,
 		mu:            sync.Mutex{},
 	}

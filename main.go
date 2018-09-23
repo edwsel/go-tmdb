@@ -59,7 +59,7 @@ func Init(config Config) *TMDb {
 	if config.UseProxy == true && len(config.Proxies) > 1 {
 		internalConfig.useProxy = config.UseProxy
 		internalConfig.proxies = prepareProxies(config.Proxies)
-		internalConfig.roundRobin = InitRoundRobin(len(internalConfig.proxies) - 1)
+		internalConfig.roundRobin = InitRoundRobin(internalConfig.proxies)
 	}
 
 	return &TMDb{apiKey: config.ApiKey}
@@ -77,22 +77,18 @@ func getTmdb(url string, payload interface{}) (interface{}, error) {
 	var blocker <-chan time.Time
 
 	if internalConfig.useProxy {
-		roundRobin := internalConfig.roundRobin.GetTicker()
-		proxy := internalConfig.proxies[roundRobin]
+		proxy := internalConfig.roundRobin.GetProxy()
 
 		if proxy.Host == "localhost" {
 			httpRequest = getHttpClient()
 		} else {
 			httpRequest = getHttpClientWithProxy(proxy)
 		}
-
-		blocker = proxy.throttle
 	} else {
 		httpRequest = getHttpClient()
 		blocker = throttle
+		<-blocker
 	}
-
-	<-blocker
 
 	res, err := httpRequest.Get(url)
 	if err != nil { // HTTP connection error
