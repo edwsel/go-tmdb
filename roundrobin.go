@@ -7,14 +7,14 @@ import (
 type roundRobinProxy struct {
 	currentTicker int
 	maxAllowed    int
-	mu            sync.Mutex
+	mu            *sync.Mutex
 }
 
 func InitRoundRobin(maxAllowed int) (roundRobinProxy) {
 	return roundRobinProxy{
 		maxAllowed:    maxAllowed,
 		currentTicker: 0,
-		mu:            sync.Mutex{},
+		mu:            &sync.Mutex{},
 	}
 }
 
